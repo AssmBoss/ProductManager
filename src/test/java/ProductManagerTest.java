@@ -57,4 +57,47 @@ public class ProductManagerTest {
         Product[] actual = manager.searchBy("D");
         Assertions.assertArrayEquals(expected, actual);
     }
+
+    @Test
+    public void shouldRunMatchesInParentBook() {
+        boolean expected = true;
+        boolean actual = Book1.matches("AB");
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldRunMatchesInBook() {
+        boolean expected = true;
+        boolean actual = Book1.matches("Fir");
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldMatchesInBookIsFalse() {
+        boolean expected = false;
+        boolean actual = Book1.matches("A-book");
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldRunMatchesInParentSmartphone() {
+        boolean expected = true;
+        boolean actual = Smart1.matches("DE");
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldRunMatchesInSmartphone() {
+        boolean expected = true;
+        boolean actual = Smart1.matches("D-v");
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldMatchesInSmartphoneIsFalse() {
+        boolean expected = false;
+        boolean actual = Smart1.matches("X-v");
+        Assertions.assertEquals(expected, actual);
+    }
+
 }

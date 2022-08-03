@@ -8,6 +8,18 @@ public class Book extends Product {
         this.bookName = bookName;
     }
 
+
+    @Override
+    public boolean matches(String search) {
+        if (super.matches(search)) {
+            return true;
+        }
+        if (author.contains(search)) {
+            return true;
+        }
+        return false;
+    }
+
     public String getAuthor() {
         return author;
     }

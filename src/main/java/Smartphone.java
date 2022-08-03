@@ -9,6 +9,17 @@ public class Smartphone extends Product {
         this.vendor = vendor;
     }
 
+    @Override
+    public boolean matches(String search) {
+        if (super.matches(search)) {
+            return true;
+        }
+        if (vendor.contains(search)) {
+            return true;
+        }
+        return false;
+    }
+
     public String getPhoneName() {
         return phoneName;
     }
