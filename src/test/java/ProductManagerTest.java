@@ -9,6 +9,7 @@ public class ProductManagerTest {
     Product Smart1 = new Smartphone(4, "DE-name", 44, "D-phone", "D-vendor");
     Product Smart2 = new Smartphone(5, "EF-name", 55, "E-phone", "E-vendor");
     Product Smart3 = new Smartphone(6, "FG-name", 66, "F-phone", "F-vendor");
+    Product TestBook3 = new Book(3, "99-name", 99, "99", "99-book");
 
     @Test
     public void shouldFillRepositoryInOrder() {
@@ -100,4 +101,55 @@ public class ProductManagerTest {
         Assertions.assertEquals(expected, actual);
     }
 
+    @Test
+    public void shouldFindById() {
+        ProductRepository testRepository = new ProductRepository();
+        testRepository.save(Book1);
+        testRepository.save(Book2);
+        testRepository.save(Book3);
+        testRepository.save(Smart1);
+
+        Product expected = Book3;
+        Product actual = testRepository.findById(3);
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldFindByIdFalse() {
+        ProductRepository testRepository = new ProductRepository();
+        testRepository.save(Book1);
+        testRepository.save(Book2);
+        testRepository.save(Book3);
+        testRepository.save(Smart1);
+
+        Product expected = null;
+        Product actual = testRepository.findById(6);
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldNotFoundExceptionCorrectWork() {
+        ProductRepository testRepository = new ProductRepository();
+        testRepository.save(Book1);
+        testRepository.save(Book2);
+        testRepository.save(Book3);
+        testRepository.save(Smart1);
+
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            testRepository.removeById(6);
+        });
+    }
+
+    @Test
+    public void shouldAlreadyExistsExceptionCorrectWork() {
+        ProductRepository testRepository = new ProductRepository();
+        testRepository.save(Book1);
+        testRepository.save(Book2);
+        testRepository.save(Book3);
+        testRepository.save(Smart1);
+
+        Assertions.assertThrows(AlreadyExistsException.class, () -> {
+            testRepository.save(TestBook3);
+        });
+    }
 }
