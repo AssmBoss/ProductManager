@@ -9,6 +9,7 @@ public class ProductManagerTest {
     Product Smart1 = new Smartphone(4, "DE-name", 44, "D-phone", "D-vendor");
     Product Smart2 = new Smartphone(5, "EF-name", 55, "E-phone", "E-vendor");
     Product Smart3 = new Smartphone(6, "FG-name", 66, "F-phone", "F-vendor");
+    Product TestBook3 = new Book(3, "99-name", 99, "99", "99-book");
 
     @Test
     public void shouldFillRepositoryInOrder() {
@@ -56,5 +57,99 @@ public class ProductManagerTest {
         Product[] expected = {Book3, Smart1};
         Product[] actual = manager.searchBy("D");
         Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldRunMatchesInParentBook() {
+        boolean expected = true;
+        boolean actual = Book1.matches("AB");
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldRunMatchesInBook() {
+        boolean expected = true;
+        boolean actual = Book1.matches("Fir");
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldMatchesInBookIsFalse() {
+        boolean expected = false;
+        boolean actual = Book1.matches("A-book");
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldRunMatchesInParentSmartphone() {
+        boolean expected = true;
+        boolean actual = Smart1.matches("DE");
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldRunMatchesInSmartphone() {
+        boolean expected = true;
+        boolean actual = Smart1.matches("D-v");
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldMatchesInSmartphoneIsFalse() {
+        boolean expected = false;
+        boolean actual = Smart1.matches("X-v");
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldFindById() {
+        ProductRepository testRepository = new ProductRepository();
+        testRepository.save(Book1);
+        testRepository.save(Book2);
+        testRepository.save(Book3);
+        testRepository.save(Smart1);
+
+        Product expected = Book3;
+        Product actual = testRepository.findById(3);
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldFindByIdFalse() {
+        ProductRepository testRepository = new ProductRepository();
+        testRepository.save(Book1);
+        testRepository.save(Book2);
+        testRepository.save(Book3);
+        testRepository.save(Smart1);
+
+        Product expected = null;
+        Product actual = testRepository.findById(6);
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldNotFoundExceptionCorrectWork() {
+        ProductRepository testRepository = new ProductRepository();
+        testRepository.save(Book1);
+        testRepository.save(Book2);
+        testRepository.save(Book3);
+        testRepository.save(Smart1);
+
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            testRepository.removeById(6);
+        });
+    }
+
+    @Test
+    public void shouldAlreadyExistsExceptionCorrectWork() {
+        ProductRepository testRepository = new ProductRepository();
+        testRepository.save(Book1);
+        testRepository.save(Book2);
+        testRepository.save(Book3);
+        testRepository.save(Smart1);
+
+        Assertions.assertThrows(AlreadyExistsException.class, () -> {
+            testRepository.save(TestBook3);
+        });
     }
 }
