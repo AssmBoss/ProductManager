@@ -43,7 +43,7 @@ public class ProductManagerTest {
     }
 
     @Test
-    public void shouldSearchByText() {
+    public void shouldSearchByTextTwoProducts() {
         ProductRepository testRepository = new ProductRepository();
         ProductManager manager = new ProductManager(testRepository);
         manager.add(Book1);
@@ -55,6 +55,38 @@ public class ProductManagerTest {
 
         Product[] expected = {Book3, Smart1};
         Product[] actual = manager.searchBy("D");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldSearchByTextOneProduct() {
+        ProductRepository testRepository = new ProductRepository();
+        ProductManager manager = new ProductManager(testRepository);
+        manager.add(Book1);
+        manager.add(Book2);
+        manager.add(Book3);
+        manager.add(Smart1);
+        manager.add(Smart2);
+        manager.add(Smart3);
+
+        Product[] expected = {Book2};
+        Product[] actual = manager.searchBy("BC");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldSearchByTextNoProduct() {
+        ProductRepository testRepository = new ProductRepository();
+        ProductManager manager = new ProductManager(testRepository);
+        manager.add(Book1);
+        manager.add(Book2);
+        manager.add(Book3);
+        manager.add(Smart1);
+        manager.add(Smart2);
+        manager.add(Smart3);
+
+        Product[] expected = new Product[0];
+        Product[] actual = manager.searchBy("ABC");
         Assertions.assertArrayEquals(expected, actual);
     }
 }
